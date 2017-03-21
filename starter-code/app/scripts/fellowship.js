@@ -1,5 +1,5 @@
 console.log('Linked.')
-document.addEventListener('DOMContentLoaded', hobbitTheme)
+// document.addEventListener('DOMContentLoaded', hobbitTheme)
 // Dramatis Personae
 var hobbits = [
   'Frodo Baggins',
@@ -16,8 +16,12 @@ var buddies = [
   'Boromir'
 ]
 
+
+
 var lands = ['The Shire', 'Rivendell', 'Mordor']
 var body = document.querySelector('body')
+var count = 0
+var timerId = 0
 
 // Part 1
 
@@ -37,7 +41,7 @@ function makeMiddleEarth () {
   })
   body.appendChild(middleEarth)
 }
-// makeMiddleEarth()
+makeMiddleEarth()
 
 // Part 2
 
@@ -63,7 +67,7 @@ function makeHobbits () {
   shire.appendChild(hobbitGang)
 }
 
-// makeHobbits()
+makeHobbits()
 
 // Part 3
 
@@ -76,14 +80,55 @@ function keepItSecretKeepItSafe () {
   theRing.id = 'the-ring'
   theRing.className = 'magic-imbued-jewelry'
 
-  theRing.addEventListener('click', nazgulScreech)
+  theRing.addEventListener('click', function () {
+    count++
+    var Frodo = document.querySelector('#frodo')
+
+    Frodo.style.opacity = 1
+    Frodo.style.transition = 'opacity 2s'
+
+    nazgulScreech()
+    function fade () {
+      Frodo.style.opacity = 0
+    }
+
+    function fadein () {
+      Frodo.style.opacity = 1
+    }
+
+    function fadeingameover () {
+      gameOver.style.opacity = 1
+    }
+
+    fade()
+    if (count >= 3) {
+      // frodo ded
+      var parent = Frodo.parentElement
+      parent.removeChild(Frodo)
+      // sauron take over
+      var gameOver = document.createElement('li')
+      gameOver.textContent = 'The Ring has been returned to Sauron and the world is over.'
+      gameOver.style.opacity = 0
+      gameOver.style.transition = 'opacity 3s'
+      gameOver.style.color = 'black'
+      gameOver.style.textShadow = '2px 2px 1px red'
+
+      var first = parent.firstChild
+      parent.insertBefore(gameOver, first)
+      timerID = window.setTimeout(fadeingameover, 1000)
+
+      return false
+    }
+    timerID = window.setTimeout(fadein, 2000)
+
+  })
 
   var hobbitGang = document.querySelectorAll('.hobbit')
   var Frodo = hobbitGang[0]
   Frodo.appendChild(theRing)
 }
 
-// keepItSecretKeepItSafe()
+keepItSecretKeepItSafe()
 
 // Part 4
 
@@ -253,21 +298,21 @@ function thereAndBackAgain () {
   var theGang = document.querySelector('#gangUl')
   var notLegolasses = Array.from(document.querySelectorAll('.buddies'))
 
-  notLegolasses.forEach(function(member) {
+  notLegolasses.forEach(function (member) {
     theGang.removeChild(member)
   })
 
   var theRetiredHobbits = document.createElement('ul')
 
   theGang = document.querySelector('#gangUl')
-  theGang.id = "hobbits"
+  theGang.id = 'hobbits'
 
   var middleEarth = body.querySelector('#middle-earth')
   var mordor = middleEarth.querySelectorAll('article')[2]
   var theSauronSquad = mordor.querySelector('ul')
   var frodoXSam = Array.from(mordor.querySelectorAll('.hobbit'))
 
-  frodoXSam.forEach(function(member) {
+  frodoXSam.forEach(function (member) {
     var name = theSauronSquad.removeChild(member)
     theGang.appendChild(name)
   })
